@@ -8,4 +8,4 @@ Hopper script that renames the annoying objc selector alias procedures.
 
 
 > **Note**
-> Currently, this script only works with Apple Silicon binaries.
+> This script only works with Apple Silicon binaries because I haven't noticed this annoying phenomenon with Intel binaries. Please make an issue if you have an example of this in an Intel binary.
