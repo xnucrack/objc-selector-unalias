@@ -70,7 +70,6 @@ def analyze_procedures():
         architecture = text_segment\
             .getInstructionAtAddress(procedure_bb.getStartingAddress())\
             .getArchitecture()
-        print(f"arch: {architecture}")
 
         if architecture == 5:
             try:
