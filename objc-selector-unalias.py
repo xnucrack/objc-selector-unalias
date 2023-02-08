@@ -56,14 +56,14 @@ def getselector_aarch64(procedure: Procedure):
 def analyze_procedures():
 
     text_segment = document.getSegmentByName('__TEXT')
+    
+    renamed_count = 0
 
     for p in range(text_segment.getProcedureCount()):
-        # print("this executed 1")
         procedure = text_segment.getProcedureAtIndex(p)
 
         if procedure.getBasicBlockCount() > 1:
             continue
-        # print("this executed 2")
 
         procedure_bb = procedure.getBasicBlock(0)
 
@@ -77,8 +77,10 @@ def analyze_procedures():
                 selector = getselector_aarch64(procedure)
                 print(f"Found alias procedure at {hex(procedure.getEntryPoint())} ({selector}).")
                 document.setNameAtAddress(procedure.getEntryPoint(), f"ALIAS__{selector}")
+                renamed_count += 1
             except Exception as e:
                 print(f"Error occurred. Address: {hex(procedure.getEntryPoint())}, Type: {type(e)}")
-
+    
+    print(f"Renamed {renamed_count} Objective-C selector aliases.")
 
 analyze_procedures()
