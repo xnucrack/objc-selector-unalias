@@ -9,6 +9,14 @@ OPCODE_SIGNATURE_AARCH64 = [
     'br'
 ]
 
+OPCODE_SIGNATURE_AARCH64E = [
+    'adrp',
+    'ldr',
+    'adrp',
+    'add',
+    'ldr'
+]
+
 
 class NoSelectorError(Exception):
     pass
@@ -44,7 +52,7 @@ def getselector_aarch64(procedure: Procedure):
     # Check if the instructions satisfy the opcode signature...
     bb_opcodes = [text_segment.getInstructionAtAddress(base + i * 4).getInstructionString() for i in range(5)]
 
-    if bb_opcodes != OPCODE_SIGNATURE_AARCH64:
+    if bb_opcodes not in [OPCODE_SIGNATURE_AARCH64, OPCODE_SIGNATURE_AARCH64E]:
         raise AliasCriteriaError
 
     # Get the Objective-C selector being aliased.
@@ -101,7 +109,7 @@ def analyze_procedures():
         if architecture == 5:
 
             # Verify that the basic block is the appropriate length for an alias function.
-            if procedure_bb.getEndingAddress() - procedure_bb.getStartingAddress() != 16:
+            if procedure_bb.getEndingAddress() - procedure_bb.getStartingAddress() not in [16, 20]:
                 continue
 
             try:
